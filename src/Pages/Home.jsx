@@ -7,14 +7,16 @@ export const Home = () => {
   return (
     <>
       <Main />
-      <Rows title="Popular" fecthURL={requests.requestPopulerMovie} />
+
       <Rows
         title="Trending This Week"
         fecthURL={requests.requestTrendingWeek}
       />
       <Rows title="Top Rate" fecthURL={requests.requestTopRate} />
       <Rows title="Action" fecthURL={requests.requestAction} />
-      <Rows title="Popular TV Show " fecthURL={requests.requestPopulerTvShow} />
+      <Rows title="Popular TV Show " fecthURL={requests.requestNowPlaying} />
+      <Rows title="Horror" fecthURL={requests.requestHorror} />
+      <Rows title="Romance" fecthURL={requests.requestRomance} />
     </>
   );
 };
