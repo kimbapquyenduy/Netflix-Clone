@@ -5,5 +5,5 @@ export const ProtectRoute = ({ children }) => {
   const { user } = UserAuth();
   if (!user) {
     return <Navigate to={"/"} />;
-  } else children;
+  } else return children;
 };
