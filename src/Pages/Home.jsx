@@ -1,5 +1,6 @@
 import React from "react";
 import { Main } from "../Components/Main";
+import { Popup } from "../Components/Popup";
 import Rows from "../Components/Rowele";
 import requests from "../Requests";
 
