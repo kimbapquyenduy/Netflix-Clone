@@ -1,5 +1,6 @@
 import React from "react";
 import { Main } from "../Components/Main";
+import { Popup } from "../Components/Popup";
 import Rows from "../Components/Rowele";
 import requests from "../Requests";
 
@@ -17,6 +18,7 @@ export const Home = () => {
       <Rows title="Popular TV Show " fecthURL={requests.requestNowPlaying} />
       <Rows title="Horror" fecthURL={requests.requestHorror} />
       <Rows title="Romance" fecthURL={requests.requestRomance} />
+      <Popup />
     </>
   );
 };

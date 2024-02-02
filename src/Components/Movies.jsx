@@ -4,7 +4,8 @@ import { useState } from "react";
 import { UserAuth } from "../Context/AuthContext";
 import { db } from "../Firebase";
 import { arrayUnion, updateDoc, doc } from "firebase/firestore";
-export const Movies = ({ item }) => {
+import { Popup } from "./Popup";
+export const Movies = ({ item, Closesing, isOpen }) => {
   const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
   const { user } = UserAuth();
@@ -27,7 +28,10 @@ export const Movies = ({ item }) => {
   };
 
   return (
-    <div className="w-[160px] sm:w-[200px] inline-block cursor-pointer relative p-2">
+    <div
+      className="w-[160px] sm:w-[200px] inline-block cursor-pointer relative p-2"
+      onClick={Closesing}
+    >
       <img
         className="w-full h-auto block"
         src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
@@ -45,6 +49,7 @@ export const Movies = ({ item }) => {
           )}
         </p>
       </div>
+      <Popup Closesing={Closesing} isOpen={isOpen} item={item} />
     </div>
   );
 };
