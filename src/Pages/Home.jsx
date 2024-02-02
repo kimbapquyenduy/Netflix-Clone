@@ -18,7 +18,6 @@ export const Home = () => {
       <Rows title="Popular TV Show " fecthURL={requests.requestNowPlaying} />
       <Rows title="Horror" fecthURL={requests.requestHorror} />
       <Rows title="Romance" fecthURL={requests.requestRomance} />
-      <Popup />
     </>
   );
 };
