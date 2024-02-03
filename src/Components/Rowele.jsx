@@ -10,7 +10,7 @@ import { Popup } from "./Popup";
 
 const Row = ({ title, fecthURL }) => {
   const [movies, setMovies] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+
   useEffect(() => {
     axios.get(fecthURL).then((response) => {
       setMovies(response.data.results);
@@ -23,10 +23,7 @@ const Row = ({ title, fecthURL }) => {
   const slideRight = () => {
     slider.current.scrollLeft = slider.current.scrollLeft + 500;
   };
-  const Closesing = () => {
-    isOpen ? setIsOpen(false) : setIsOpen(true);
-    console.log(isOpen);
-  };
+
   return (
     <>
       <h2 className="text-white font-bold md:text-xl p-4">{title}</h2>
@@ -41,7 +38,7 @@ const Row = ({ title, fecthURL }) => {
           className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative"
         >
           {movies.map((item, id) => (
-            <Movies item={item} Closesing={Closesing} isOpen={isOpen} />
+            <Movies item={item} />
           ))}
         </div>
         <MdChevronRight
