@@ -31,14 +31,17 @@ export const Movies = ({ item }) => {
   return (
     <>
       <div
-        className="w-[160px] sm:w-[200px] inline-block cursor-pointer relative p-2"
+        className="w-[160px] sm:w-[200px] inline-block cursor-pointer relative p-2 hover:w-[325px] hover:h-[300px] group hover:shadow hover:shadow-white"
         onClick={() => setIsOpen(true)}
       >
         <img
-          className="w-full h-auto block"
+          className="w-full h-full block object-cover group-hover:h-[140px]"
           src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
           alt={item?.title ? item?.title : item.name}
         />
+        <div>
+          <div className="hidden group-hover:block">we</div>
+        </div>
         <div className="absolute top-0 left-0 w-full h-full hover:bg-[#1b1b1b]/70 opacity-0 hover:opacity-100 text-white">
           <p className=" whitespace-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center  ">
             {item?.title ? item?.title : item.name}

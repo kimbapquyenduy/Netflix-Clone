@@ -55,7 +55,7 @@ export const Popup = ({ setIsOpen, isOpen, item }) => {
             </div>
             <div className="flex align-middle justify-center">
               <div className="px-6 pb-2 flex-[65%] ">
-                <p className="text-3xl text-white font-bold ">
+                <p className="text-3xl text-white font-bold break-words whitespace-pre-wrap ">
                   {item?.title ? item?.title : item.name}
                 </p>
 
