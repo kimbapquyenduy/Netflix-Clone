@@ -31,30 +31,37 @@ export const Movies = ({ item }) => {
   return (
     <>
       <div
-        className="w-[160px] sm:w-[200px] inline-block cursor-pointer relative p-2 hover:w-[325px] hover:h-[300px] group hover:shadow hover:shadow-white"
+        className={`group/item w-[160px] sm:w-[200px] inline-block cursor-pointer p-2 `}
         onClick={() => setIsOpen(true)}
       >
-        <img
-          className="w-full h-full block object-cover group-hover:h-[140px]"
-          src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
-          alt={item?.title ? item?.title : item.name}
-        />
-        <div>
-          <div className="hidden group-hover:block">we</div>
+        <div className="bg-black group-hover/item:absolute group-hover/item:left-[50%]  group-hover/item:top-[50%]  group-hover/item:w-[300px] group-hover/item:h-[275px] hover:shadow hover:shadow-white z-[999]">
+          <div className="  ">
+            <img
+              className={`w-full h-full block object-cover group-hover/item:h-[50%]  `}
+              src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
+              alt={item?.title ? item?.title : item.name}
+            />
+            <div className="hidden group-hover/item:block text-white">
+              <p className=" whitespace-normal text-xs md:text-sm font-bold">
+                {item?.title ? item?.title : item.name}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="absolute top-0 left-0 w-full h-full hover:bg-[#1b1b1b]/70 opacity-0 hover:opacity-100 text-white">
-          <p className=" whitespace-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center  ">
-            {item?.title ? item?.title : item.name}
-          </p>
-          <p onClick={saveMovies}>
+        {/* <p onClick={saveMovies}>
             {like ? (
               <FaHeart className="absolute top-4 left-4 text-gray-400" />
             ) : (
               <FaRegHeart className="absolute top-4 left-4 text-gray-300" />
             )}
-          </p>
-        </div>
+          </p> */}
+        {/* <div className="absolute top-0 left-0 w-full h-full hover:bg-[#1b1b1b]/70 opacity-0 hover:opacity-100 text-white">
+          <div className=" whitespace-normal text-xs md:text-sm font-bold flex justify-center items-center text-center  ">
+            {item?.title ? item?.title : item.name}
+          </div>
+        </div> */}
       </div>
+
       <Popup setIsOpen={setIsOpen} isOpen={isOpen} item={item} />
     </>
   );

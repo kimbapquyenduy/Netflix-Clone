@@ -29,20 +29,20 @@ const Row = ({ title, fecthURL }) => {
       <h2 className="text-white font-bold md:text-xl p-4">{title}</h2>
       <div className="relative flex items-center group">
         <MdChevronLeft
-          className="bg-white rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 hidden group-hover:block"
+          className="bg-white rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-[99999] hidden group-hover:block"
           size={40}
           onClick={slideLeft}
         />
         <div
           ref={slider}
-          className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative"
+          className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide "
         >
           {movies.map((item, id) => (
             <Movies item={item} />
           ))}
         </div>
         <MdChevronRight
-          className="bg-white right-0 rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 hidden group-hover:block"
+          className="bg-white right-0 rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-[999999] hidden group-hover:block"
           size={40}
           onClick={slideRight}
         />
