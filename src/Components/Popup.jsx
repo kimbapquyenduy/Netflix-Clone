@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,8 +5,7 @@ import { AiFillYoutube, AiOutlineClose } from "react-icons/ai";
 import requests from "../Requests";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
-export const Popup = ({ setIsOpen, isOpen, item }) => {
-  const [genre, setGenre] = useState([]);
+export const Popup = ({ setIsOpen, isOpen, item, genre }) => {
   const [urlTrailer, setUrlTrailer] = useState([]);
   movieTrailer(null, { tmdbId: item?.id })
     .then((url) => {
@@ -15,6 +13,7 @@ export const Popup = ({ setIsOpen, isOpen, item }) => {
       setUrlTrailer(urlParams.get("v"));
     })
     .catch((error) => console.log(error));
+
   const opts = {
     height: "100%",
     width: "100%",
@@ -22,11 +21,7 @@ export const Popup = ({ setIsOpen, isOpen, item }) => {
       autoplay: 1,
     },
   };
-  useEffect(() => {
-    axios.get(requests.requestGenre).then((response) => {
-      setGenre(response.data.genres);
-    });
-  }, [requests.requestGenre]);
+
   const truncateString = (str, num) => {
     if (str?.length > num) {
       return str.slice(0, num) + "...";

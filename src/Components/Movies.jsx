@@ -12,13 +12,21 @@ import { useEffect } from "react";
 import requests from "../Requests";
 import axios from "axios";
 
-export const Movies = ({ item }) => {
+export const Movies = ({ item, index }) => {
   const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [genre, setGenre] = useState([]);
   const [runtime, setRuntime] = useState();
   const { user } = UserAuth();
+
+  const [MousePos, setMousePos] = useState();
+
+  const handleMouseMove = (event) => {
+    const x = event.clientX;
+    setMousePos(x);
+  };
+
   useEffect(() => {
     axios.get(requests.requestGenre).then((response) => {
       setGenre(response.data.genres);
@@ -65,13 +73,16 @@ export const Movies = ({ item }) => {
   return (
     <>
       <div
-        className={`group/item w-[160px] sm:w-[200px] inline-block cursor-pointer p-2 `}
+        className={`group/item h-full w-[200px] sm:w-[240px] inline-block cursor-pointer p-2 relative `}
+        onMouseOver={handleMouseMove}
         onClick={() => setIsOpen(true)}
       >
-        <div className="bg-[#1b1b1b] group-hover/item:absolute group-hover/item:left-[50%]  group-hover/item:top-[50%]  group-hover/item:w-[325px] group-hover/item:h-[300px] hover:shadow hover:shadow-white z-[999]">
-          <div className="">
+        <div className="">
+          <div
+            className={`bg-[#1b1b1b]  group-hover/item:absolute group-hover/item:left-[${MousePos}px]  group-hover/item:top-[-150px]  group-hover/item:w-[325px] group-hover/item:h-[300px] group-hover/item:shadow-md group-hover/item:shadow-black/30 rounded z-[999]`}
+          >
             <img
-              className={`w-full h-full block object-cover group-hover/item:h-[50%]  `}
+              className={`w-full  block object-cover group-hover/item:h-[50%] group-hover/item:rounded  `}
               src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
               alt={item?.title ? item?.title : item.name}
             />
@@ -82,7 +93,7 @@ export const Movies = ({ item }) => {
                   size={35}
                   className="bg-white rounded-full text-[#1b1b1b] ml-2"
                 />
-                <IoIosCheckmarkCircle />
+                <IoIosCheckmarkCircle className="" />
               </div>
 
               <p className=" whitespace-normal text-xs md:text-sm font-bold">
