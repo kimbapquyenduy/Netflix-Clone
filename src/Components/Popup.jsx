@@ -19,6 +19,13 @@ export const Popup = ({ setIsOpen, isOpen, item, genre }) => {
     width: "100%",
     playerVars: {
       autoplay: 1,
+      controls: 0,
+      cc_load_policy: 1,
+      iv_load_policy: 1,
+      loop: 1,
+      allowfullscreen: 1,
+      cc_load_policy: 3,
+      iv_load_policy: 3,
     },
   };
 
@@ -31,10 +38,12 @@ export const Popup = ({ setIsOpen, isOpen, item, genre }) => {
   return (
     <>
       {isOpen ? (
-        <div className="fixed w-[100%] h-[100vh] bg-black/90 justify-center items-center top-0 left-0 flex z-[999]">
+        <div className="fixed w-[100%] h-[100vh] bg-black/90 justify-center items-center top-0 left-0 flex z-[999999]">
           <div className=" w-[800px] h-[97vh] bg-[#181818] ">
             <div className="w-full h-[70%] bg-white relative ">
               <div className="absolute bottom-0 w-full h-[35%] bg-gradient-to-t from-[#181818]"></div>
+              <div className="absolute top-0 w-full h-[35%] bg-gradient-to-b from-[#000000]"></div>
+              <div className="absolute bottom-0 w-full h-full"></div>
               <div
                 className="absolute top-4 right-2 text-xl rounded-full bg-black/80 text-white p-1 cursor-pointer z-[99999]"
                 onClick={() => setIsOpen(false)}
