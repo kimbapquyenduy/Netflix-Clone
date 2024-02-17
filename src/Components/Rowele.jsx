@@ -43,7 +43,7 @@ const Row = ({ title, fecthURL }) => {
   return (
     <>
       <h2 className="text-white font-bold md:text-xl p-4">{title}</h2>
-      <div className=" flex items-center group relative">
+      <div className=" flex items-center group relative w-full">
         {/* <MdChevronLeft
           className=" bg-black/20 absolute top-0 bottom-0  hover:opacity-100 cursor-pointer z-[99999] hidden group-hover:block h-[100%] text-white hover:scale-[1.2]"
           size={40}
@@ -51,7 +51,7 @@ const Row = ({ title, fecthURL }) => {
         /> */}
         <div
           ref={slider}
-          className="w-full h-full overflow-y-visible overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide overflow-visible mx-2"
+          className="w-full h-full overflow-y-visible overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide overflow-hidden mx-2"
         >
           {ranMovies.map((item, index) => (
             <Movies item={item} index={index} />

@@ -11,6 +11,7 @@ import { Popup } from "./Popup";
 import { useEffect } from "react";
 import requests from "../Requests";
 import axios from "axios";
+import { useRef } from "react";
 
 export const Movies = ({ item, index }) => {
   const [like, setLike] = useState(false);
@@ -19,14 +20,23 @@ export const Movies = ({ item, index }) => {
   const [genre, setGenre] = useState([]);
   const [runtime, setRuntime] = useState();
   const { user } = UserAuth();
-
+  const Hoverpop = useRef();
   const [MousePos, setMousePos] = useState();
 
   const handleMouseMove = (event) => {
-    const x = event.clientX;
-    setMousePos(x);
+    const x = Hoverpop.current.getBoundingClientRect().x;
+    if (index === 0) {
+      Hoverpop.current.style.left = x + "px";
+    } else if (index === 5) {
+      Hoverpop.current.style.left = 74 + "rem";
+    } else {
+      Hoverpop.current.style.left = x - 50 + "px";
+    }
   };
-
+  const handleMouseleave = (event) => {
+    const x = Hoverpop.current.getBoundingClientRect().x;
+    Hoverpop.current.style.left = x + "px";
+  };
   useEffect(() => {
     axios.get(requests.requestGenre).then((response) => {
       setGenre(response.data.genres);
@@ -81,15 +91,17 @@ export const Movies = ({ item, index }) => {
   return (
     <>
       <div
-        className={`group/item h-full w-[200px] sm:w-[250px] inline-block cursor-pointer p-2  `}
-        onMouseOver={handleMouseMove}
-        onClick={() => setIsOpen(true)}
+        className={`group/item h-full w-[200px] sm:w-[250px] inline-block  p-1  `}
+        onMouseEnter={() => handleMouseMove()}
+        onMouseOut={() => handleMouseleave()}
       >
         <div
-          className={`bg-[#1b1b1b] transition duration-500 ease-out group-hover/item:absolute group-hover/item:left-[${MousePos}px]  group-hover/item:top-[-150px]  group-hover/item:w-[325px] group-hover/item:h-[300px] group-hover/item:shadow-md group-hover/item:shadow-black/30 rounded z-[999]`}
+          ref={Hoverpop}
+          className={`bg-[#1b1b1b]  transition duration-500 ease-out group-hover/item:absolute group-hover/item:top-[-50px]  group-hover/item:w-[325px] group-hover/item:h-[300px] group-hover/item:shadow-md	 group-hover/item:shadow-black rounded z-[999]`}
         >
           <img
-            className={`w-full  block object-cover group-hover/item:h-[50%] group-hover/item:rounded   `}
+            onClick={() => setIsOpen(true)}
+            className={`w-full  block object-cover group-hover/item:h-[50%] group-hover/item:rounded  cursor-pointer `}
             src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
             alt={item?.title ? item?.title : item.name}
           />
@@ -107,13 +119,20 @@ export const Movies = ({ item, index }) => {
             className="hidden group-hover/item:block w-full h-[170px] object-cover "
           ></iframe> */}
           <div className="hidden group-hover/item:block text-white px-2 pt-2">
-            <div className="flex">
-              <FaCirclePlay size={35} className="text-sm" />
-              <FaCirclePlus
-                size={35}
-                className="bg-white rounded-full text-[#1b1b1b] ml-2"
-              />
-              <IoIosCheckmarkCircle className="" />
+            <div className="flex mb-2">
+              <FaCirclePlay size={40} className="text-sm cursor-pointer" />
+              {like ? (
+                <IoIosCheckmarkCircle
+                  className="bg-white rounded-full text-[#1b1b1b] ml-2 cursor-pointer"
+                  size={40}
+                />
+              ) : (
+                <FaCirclePlus
+                  onClick={saveMovies}
+                  size={40}
+                  className="bg-white rounded-full text-[#1b1b1b] ml-2 z-50 cursor-pointer"
+                />
+              )}
             </div>
 
             <p className=" whitespace-normal text-xs md:text-sm font-bold">
