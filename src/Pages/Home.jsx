@@ -8,16 +8,39 @@ export const Home = () => {
   return (
     <>
       <Main />
+      <Rows
+        title="Netflix Original Tv Show"
+        fecthURL={requests.requestPopulerTVShow}
+        tOS={"tv"}
+      />
+      <Rows
+        title="Hot Movies"
+        fecthURL={requests.requestNetflixMovies}
+        tOS={"movie"}
+      />
       <div className="relative">
         <Rows
           title="Trending This Week"
           fecthURL={requests.requestTrendingWeek}
+          tOS={"tv"}
         />
-        <Rows title="Top Rate" fecthURL={requests.requestTopRate} />
-        <Rows title="Action" fecthURL={requests.requestAction} />
-        <Rows title="Popular Movie " fecthURL={requests.requestNowPlaying} />
-        <Rows title="Horror" fecthURL={requests.requestHorror} />
-        <Rows title="Romance" fecthURL={requests.requestRomance} />
+        <Rows
+          title="Top Rate"
+          fecthURL={requests.requestTopRate}
+          tOS={"movie"}
+        />
+        <Rows title="Action" fecthURL={requests.requestAction} tOS={"movie"} />
+        <Rows
+          title="Popular Movie "
+          fecthURL={requests.requestNowPlaying}
+          tOS={"movie"}
+        />
+        <Rows title="Horror" fecthURL={requests.requestHorror} tOS={"movie"} />
+        <Rows
+          title="Romance"
+          fecthURL={requests.requestRomance}
+          tOS={"movie"}
+        />
       </div>
     </>
   );

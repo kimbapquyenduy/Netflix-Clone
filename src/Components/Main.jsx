@@ -6,7 +6,7 @@ export const Main = () => {
   const [movies, setMovies] = useState([]);
   const movie = movies[Math.floor(Math.random() * movies?.length)];
   useState(() => {
-    axios.get(requests.requestPopulerMovie).then((respone) => {
+    axios.get(requests.requestPopulerTVShow).then((respone) => {
       setMovies(respone.data.results);
     });
   }, []);

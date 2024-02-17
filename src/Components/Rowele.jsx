@@ -6,17 +6,14 @@ import { useState } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 import { Movies } from "./Movies";
-import { Popup } from "./Popup";
 
-const Row = ({ title, fecthURL }) => {
+const Row = ({ title, fecthURL, tOS }) => {
   const [movies, setMovies] = useState([]);
   const ranMovies = [];
 
   shuffle(movies).map((i) => {
     if (ranMovies.length < 6) ranMovies.push(i);
   });
-
-  const movie = movies[Math.floor(Math.random() * movies?.length)];
 
   useEffect(() => {
     axios.get(fecthURL).then((response) => {
@@ -54,7 +51,7 @@ const Row = ({ title, fecthURL }) => {
           className="w-full h-full overflow-y-visible overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide overflow-hidden mx-2"
         >
           {ranMovies.map((item, index) => (
-            <Movies item={item} index={index} />
+            <Movies item={item} index={index} tOS={tOS} />
           ))}
         </div>
         {/* <MdChevronRight
