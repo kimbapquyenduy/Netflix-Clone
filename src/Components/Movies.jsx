@@ -66,7 +66,6 @@ export const Movies = ({ item, index, tOS }) => {
           ` https://api.themoviedb.org/3/movie/${item?.id}?api_key=7452c219263bf44f619c3120bc2b3e4d`
         )
         .then((response) => {
-          console.log(response.data);
           setRuntime(response.data.runtime);
         });
     }, [
@@ -160,7 +159,7 @@ export const Movies = ({ item, index, tOS }) => {
               />
             </div>
             <div className="m-3 flex justify-between flex-col h-100%">
-              <p className=" whitespace-normal text-xs md:text-lg font-bold ">
+              <p className=" whitespace-normal text-xs md:text-lg font-bold  max-w-60">
                 {item?.title ? item?.title : item.name}
               </p>
               <p className="my-1 text-[#b4b4b4]">

@@ -30,10 +30,11 @@ export const Popup = ({
       autoplay: 1,
       controls: 0,
       loop: 1,
+
       allowfullscreen: 1,
     },
   };
-  console.log(tOS);
+
   if (tOS == "tv") {
     useEffect(() => {
       axios
@@ -105,7 +106,7 @@ export const Popup = ({
                 opts={opts}
                 className="absolute top-0 bottom-0 left-0 h-full w-full z-0"
               />
-              <p className="text-5xl text-white font-bold break-words whitespace-pre-wrap absolute left-10 bottom-40 font-serif">
+              <p className="text-5xl text-white font-bold break-words whitespace-pre-wrap absolute left-10 bottom-40 font-serif max-w-2xl ">
                 {item?.title ? item?.title : item.name}
               </p>
               <div className="flex w-full m-3 absolute left-8 bottom-20">
