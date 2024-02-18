@@ -52,7 +52,7 @@ export const Home = () => {
           tOS={"movie"}
         />
       </div>
-      <footer className="w-full flex items-center justify-center h-[300px]">
+      <footer className="w-full flex items-end justify-center h-[350px]">
         <Footer />
       </footer>
     </>
