@@ -48,7 +48,7 @@ const Row = ({ title, fecthURL, tOS }) => {
         /> */}
         <div
           ref={slider}
-          className="w-full h-full overflow-y-visible overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide overflow-hidden mx-2"
+          className="w-full h-full overflow-y-visible overflow-x-scroll  scroll-smooth scrollbar-hide overflow-hidden mx-2 flex content-between"
         >
           {ranMovies.map((item, key) => (
             <Movies item={item} key={key} index={key} tOS={tOS} />

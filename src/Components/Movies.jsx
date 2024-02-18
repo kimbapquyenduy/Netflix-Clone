@@ -32,7 +32,7 @@ export const Movies = ({ item, key, index, tOS }) => {
     if (index === 0) {
       Hoverpop.current.style.left = x + "px";
     } else if (index === 5) {
-      Hoverpop.current.style.left = 72 + "rem";
+      Hoverpop.current.style.left = 78 + "%";
     } else {
       Hoverpop.current.style.left = x - 50 + "px";
     }
@@ -105,13 +105,13 @@ export const Movies = ({ item, key, index, tOS }) => {
   return (
     <>
       <div
-        className={`group/item h-full w-[200px] sm:w-[250px] inline-block  p-1  `}
+        className={`group/item h-full w-[200px] sm:w-full inline-block  p-1  `}
         onMouseEnter={() => handleMouseMove()}
         onMouseOut={() => handleMouseleave()}
       >
         <div
           ref={Hoverpop}
-          className={`bg-[#1b1b1b]  transition duration-500 ease-out group-hover/item:absolute group-hover/item:top-[-100px]  group-hover/item:w-[350px] group-hover/item:h-[400px] group-hover/item:shadow-md	 group-hover/item:shadow-black rounded z-[999]`}
+          className={`bg-[#1b1b1b]  transition duration-500 ease-out group-hover/item:absolute group-hover/item:top-[-100px]  group-hover/item:w-[320px] group-hover/item:h-[400px] group-hover/item:shadow-md group-hover/item:shadow-black rounded z-[999] 2xl:group-hover/item:w-[21vw] 2xl:group-hover/item:h-[24rem] xl:group-hover/item:w-[21vw] xl:group-hover/item:h-[19rem] lg:group-hover/item:w-[21vw] lg:group-hover/item:h-[15rem]`}
         >
           <img
             className={`w-full  block object-cover group-hover/item:h-[50%] group-hover/item:rounded  cursor-pointer `}
