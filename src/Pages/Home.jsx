@@ -1,13 +1,23 @@
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import { Main } from "../Components/Main";
 import { Popup } from "../Components/Popup";
 import Rows from "../Components/Rowele";
 import requests from "../Requests";
-
+import axios from "axios";
+import Footer from "../Components/Footer";
 export const Home = () => {
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    axios.get(requests.requestPopulerTVShow).then((respone) => {
+      setMovies((previousState) => (previousState = respone.data.results));
+    });
+  }, [requests.requestPopulerTVShow]);
+  const movie = movies[Math.floor(Math.random() * movies?.length)];
   return (
     <>
-      <Main />
+      <Main tOS={"tv"} movie={movie} />
       <Rows
         title="Netflix Original Tv Show"
         fecthURL={requests.requestPopulerTVShow}
@@ -42,6 +52,9 @@ export const Home = () => {
           tOS={"movie"}
         />
       </div>
+      <footer className="w-full flex items-center justify-center h-[300px]">
+        <Footer />
+      </footer>
     </>
   );
 };

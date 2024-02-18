@@ -9,6 +9,7 @@ import movieTrailer from "movie-trailer";
 import axios from "axios";
 import { FaPlay, FaCirclePlus, FaCircleChevronDown } from "react-icons/fa6";
 import { IoIosCheckmark } from "react-icons/io";
+import { Link } from "react-router-dom";
 export const Popup = ({
   setIsOpen,
   isOpen,
@@ -22,7 +23,7 @@ export const Popup = ({
   like,
 }) => {
   const [urlTrailer, setUrlTrailer] = useState([]);
-  console.log(item);
+
   const opts = {
     height: "100%",
     width: "100%",
@@ -37,43 +38,47 @@ export const Popup = ({
 
   if (tOS == "tv") {
     useEffect(() => {
-      axios
-        .get(
-          ` https://api.themoviedb.org/3/tv/${item?.id}/videos?api_key=7452c219263bf44f619c3120bc2b3e4d`
-        )
-        .then((response) => {
-          const arrdata = response.data.results;
+      if (item) {
+        axios
+          .get(
+            ` https://api.themoviedb.org/3/tv/${item?.id}/videos?api_key=7452c219263bf44f619c3120bc2b3e4d`
+          )
+          .then((response) => {
+            const arrdata = response.data.results;
 
-          arrdata.map((item) => {
-            if (item.type == "Trailer") {
-              setUrlTrailer(item.key);
-            }
+            arrdata.map((item) => {
+              if (item.type == "Trailer") {
+                setUrlTrailer(item.key);
+              }
+            });
+          })
+          .catch((err) => {
+            console.error(err.response.data);
           });
-        })
-        .catch((err) => {
-          console.error(err.response.data);
-        });
+      }
     }, [
       ` https://api.themoviedb.org/3/tv/${item?.id}/videos?api_key=7452c219263bf44f619c3120bc2b3e4d`,
     ]);
-  } else if ((tOS = "movie")) {
+  } else if (tOS == "movie") {
     useEffect(() => {
-      axios
-        .get(
-          ` https://api.themoviedb.org/3/movie/${item?.id}/videos?api_key=7452c219263bf44f619c3120bc2b3e4d`
-        )
-        .then((response) => {
-          const arrdata = response.data.results;
+      if (item) {
+        axios
+          .get(
+            ` https://api.themoviedb.org/3/movie/${item?.id}/videos?api_key=7452c219263bf44f619c3120bc2b3e4d`
+          )
+          .then((response) => {
+            const arrdata = response.data.results;
 
-          arrdata.map((item) => {
-            if (item.type == "Trailer") {
-              setUrlTrailer(item.key);
-            }
+            arrdata.map((item) => {
+              if (item.type == "Trailer") {
+                setUrlTrailer(item.key);
+              }
+            });
+          })
+          .catch((err) => {
+            console.error(err.response.data);
           });
-        })
-        .catch((err) => {
-          console.error(err.response.data);
-        });
+      }
     }, [
       ` https://api.themoviedb.org/3/movie/${item?.id}/videos?api_key=7452c219263bf44f619c3120bc2b3e4d`,
     ]);
@@ -89,8 +94,8 @@ export const Popup = ({
     <>
       {isOpen ? (
         <div className="fixed w-[100%] h-[100vh] bg-black/90 justify-center items-center top-0 left-0 flex z-[999999] font-sans ">
-          <div className=" w-[950px] h-[97vh] bg-[#181818] rounded-lg">
-            <div className="w-full h-[75%] bg-white relative rounded-lg ">
+          <div className=" w-[900px] h-[98vh] bg-[#181818] rounded-lg">
+            <div className="w-full h-[70%] bg-white relative rounded-lg ">
               <div className="absolute bottom-0 w-full h-[10%] bg-gradient-to-t from-[#181818] z-10"></div>
               <div className="absolute top-0 w-full h-[35%] bg-gradient-to-b from-[#000000] z-10"></div>
               <div className="absolute bottom-0 w-full h-full z-10"></div>
@@ -110,12 +115,14 @@ export const Popup = ({
                 {item?.title ? item?.title : item.name}
               </p>
               <div className="flex w-full m-3 absolute left-8 bottom-20">
-                <div className="flex items-center align-middle justify-center bg-white rounded w-[140px] h-[40px] hover:bg-white/70 z-50 transition duration-200 cursor-pointer">
-                  <FaPlay size={25} className="text-sm  " />
-                  <p className=" font-semibold text-lg cursor-pointer text-black ml-2">
-                    Play
-                  </p>
-                </div>
+                <Link to={`/watch/${tOS}/${item?.id}`} className="z-[100]">
+                  <div className="flex items-center align-middle justify-center bg-white rounded w-[140px] h-[40px] hover:bg-white/70 z-50 transition duration-200 cursor-pointer">
+                    <FaPlay size={25} className="text-sm  " />
+                    <p className=" font-semibold text-lg cursor-pointer text-black ml-2">
+                      Play
+                    </p>
+                  </div>
+                </Link>
 
                 {like ? (
                   <IoIosCheckmark

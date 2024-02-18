@@ -15,16 +15,15 @@ import { useEffect } from "react";
 import requests from "../Requests";
 import axios from "axios";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
-export const Movies = ({ item, index, tOS }) => {
+export const Movies = ({ item, key, index, tOS }) => {
   const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [genre, setGenre] = useState([]);
   const [runtime, setRuntime] = useState();
-
   const [epNum, setEpNum] = useState();
-
   const { user } = UserAuth();
   const Hoverpop = useRef();
 
@@ -89,11 +88,7 @@ export const Movies = ({ item, index, tOS }) => {
       alert("Log In To Save Movies!");
     }
   };
-  const truncateString = (str, num) => {
-    if (str?.length > num) {
-      return str.slice(0, num) + "...";
-    } else return str;
-  };
+
   const trasnWatchTime = (totatlminute) => {
     var Hours = Math.floor(totatlminute / 60);
     var minutes = totatlminute % 60;
@@ -138,7 +133,12 @@ export const Movies = ({ item, index, tOS }) => {
           ></iframe> */}
           <div className="hidden group-hover/item:block text-white px-2 pt-2 ">
             <div className="flex m-3 z-[99999] ">
-              <FaCirclePlay size={45} className="text-sm cursor-pointer" />
+              <Link to={`/watch/${tOS}/${item?.id}`}>
+                <FaCirclePlay
+                  size={45}
+                  className="text-sm cursor-pointer  hover:text-white/70 transition duration-200 "
+                />
+              </Link>
               {like ? (
                 <IoIosCheckmark
                   className="text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"

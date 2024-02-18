@@ -9,6 +9,7 @@ import Login from "./Pages/Login";
 import { SignUp } from "./Pages/SignUp";
 import { Account } from "./Pages/Account";
 import { ProtectRoute } from "./Components/ProtectRoute";
+import { Watch } from "./Pages/Watch";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/watch/:tOS/:id" element={<Watch />} />
           <Route
             path="/account"
             element={

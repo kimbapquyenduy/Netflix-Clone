@@ -50,8 +50,8 @@ const Row = ({ title, fecthURL, tOS }) => {
           ref={slider}
           className="w-full h-full overflow-y-visible overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide overflow-hidden mx-2"
         >
-          {ranMovies.map((item, index) => (
-            <Movies item={item} index={index} tOS={tOS} />
+          {ranMovies.map((item, key) => (
+            <Movies item={item} key={key} index={key} tOS={tOS} />
           ))}
         </div>
         {/* <MdChevronRight
