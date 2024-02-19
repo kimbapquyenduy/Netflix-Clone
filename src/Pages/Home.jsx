@@ -17,7 +17,7 @@ export const Home = () => {
   const movie = movies[Math.floor(Math.random() * movies?.length)];
   return (
     <>
-      <Main tOS={"tv"} movie={movie} />
+      <Main tOS={"tv"} movie={movie} className="h-full " />
       <Rows
         title="Netflix Original Tv Show"
         fecthURL={requests.requestPopulerTVShow}

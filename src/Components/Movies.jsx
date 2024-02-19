@@ -32,7 +32,7 @@ export const Movies = ({ item, key, index, tOS }) => {
     if (index === 0) {
       Hoverpop.current.style.left = x + "px";
     } else if (index === 5) {
-      Hoverpop.current.style.left = 78 + "%";
+      Hoverpop.current.style.left = 77 + "%";
     } else {
       Hoverpop.current.style.left = x - 50 + "px";
     }
@@ -111,13 +111,15 @@ export const Movies = ({ item, key, index, tOS }) => {
       >
         <div
           ref={Hoverpop}
-          className={`bg-[#1b1b1b]  transition duration-500 ease-out group-hover/item:absolute group-hover/item:top-[-100px]  group-hover/item:w-[320px] group-hover/item:h-[400px] group-hover/item:shadow-md group-hover/item:shadow-black rounded z-[999] 2xl:group-hover/item:w-[21vw] 2xl:group-hover/item:h-[24rem] xl:group-hover/item:w-[21vw] xl:group-hover/item:h-[19rem] lg:group-hover/item:w-[21vw] lg:group-hover/item:h-[15rem]`}
+          className={`bg-[#1b1b1b]  transition duration-500 ease-out group-hover/item:absolute group-hover/item:top-[-100px]  group-hover/item:w-[320px] group-hover/item:h-[400px] group-hover/item:shadow-md group-hover/item:shadow-black rounded-xl z-[999]  2xl:group-hover/item:w-[22vw] 2xl:group-hover/item:h-[23rem] xl:group-hover/item:w-[22vw] xl:group-hover/item:h-[19rem] lg:group-hover/item:w-[22vw] lg:group-hover/item:h-[15rem] `}
         >
-          <img
-            className={`w-full  block object-cover group-hover/item:h-[50%] group-hover/item:rounded  cursor-pointer `}
-            src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
-            alt={item?.title ? item?.title : item.name}
-          />
+          <div className="h-[50%]">
+            <img
+              className={`w-full  block object-cover group-hover/item:h-[100%] group-hover/item:rounded  cursor-pointer `}
+              src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
+              alt={item?.title ? item?.title : item.name}
+            />
+          </div>
           {/* <YouTube
             videoId="edyqWHRgSX8"
             opts={opts}
@@ -131,46 +133,33 @@ export const Movies = ({ item, key, index, tOS }) => {
             frameborder="0"
             className="hidden group-hover/item:block w-full h-[170px] object-cover "
           ></iframe> */}
-          <div className="hidden group-hover/item:block text-white px-2 pt-2 ">
-            <div className="flex m-3 z-[99999] ">
+          <div className="hidden group-hover/item:block text-white px-2  h-[50%]">
+            <div className="flex mx-3 mt-3  z-[99999] ">
               <Link to={`/watch/${tOS}/${item?.id}`}>
-                <FaCirclePlay
-                  size={45}
-                  className="text-sm cursor-pointer  hover:text-white/70 transition duration-200 "
-                />
+                <FaCirclePlay className="text-[2.5vw] cursor-pointer  hover:text-white/70 transition duration-200 " />
               </Link>
               {like ? (
-                <IoIosCheckmark
-                  className="text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"
-                  size={45}
-                />
+                <IoIosCheckmark className=" text-[2.5vw] text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200" />
               ) : (
                 <FaCirclePlus
                   onClick={saveMovies}
-                  size={45}
-                  className="bg-white rounded-full text-[#1b1b1b] ml-2 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
+                  className=" text-[2.5vw] bg-white rounded-full text-[#1b1b1b] ml-2 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
                 />
               )}
 
               <FaCircleChevronDown
                 onClick={() => setIsOpen(true)}
-                size={45}
-                className="text-sm cursor-pointer absolute right-7 bg-white rounded-full text-[#1b1b1b]  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
+                className="text-[2.5vw] text-sm cursor-pointer absolute right-7 bg-white rounded-full text-[#1b1b1b]  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
               />
             </div>
-            <div className="m-3 flex justify-between flex-col h-100%">
-              <p className=" whitespace-normal text-xs md:text-lg font-bold  max-w-60">
+            <div className="mx-3 flex justify-evenly  flex-col h-[65%] ">
+              <p className=" whitespace-normal text-lg font-bold lg:text-sm xl:text-base 2xl:text-lg ">
                 {item?.title ? item?.title : item.name}
               </p>
-              <p className="my-1 text-[#b4b4b4]">
+              <p className=" text-[#b4b4b4] lg:text-xs xl:text-sm 2xl:text-base ">
                 {tOS == "tv" ? epNum + " Episode" : trasnWatchTime(runtime)}
               </p>
-
-              {/* <p className="text-xs break-words whitespace-pre-wrap">
-                {truncateString(item.overview, 200)}
-              </p> */}
-
-              <p className="text-base break-words whitespace-pre-wrap font-bold ">
+              <p className="text-base break-words whitespace-pre-wrap font-bold lg:text-xs xl:text-sm 2xl:text-base ">
                 {item?.genre_ids.slice(0, 3).map((genlist) =>
                   genre
 
