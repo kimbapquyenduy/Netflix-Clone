@@ -88,11 +88,10 @@ export const Movies = ({ item, key, index, tOS }) => {
       setFavMovies(doc.data()?.saveMovies);
     });
   }, [user?.email]);
-  let test = true;
+
   const movieID = doc(db, "users", `${user?.email}`);
   const saveMovies = async () => {
     if (user?.email) {
-      CheckFav();
       await updateDoc(movieID, {
         saveMovies: arrayUnion({
           id: item?.id,
@@ -110,6 +109,7 @@ export const Movies = ({ item, key, index, tOS }) => {
     } else {
       alert("Log In To Save Movies!");
     }
+    setSave(true);
   };
 
   const moviesRef = doc(db, "users", `${user?.email}`);
@@ -119,10 +119,10 @@ export const Movies = ({ item, key, index, tOS }) => {
       await updateDoc(moviesRef, {
         saveMovies: result,
       });
-      CheckFav();
     } catch (error) {
       console.log(error);
     }
+    setSave(false);
   };
 
   const trasnWatchTime = (totatlminute) => {
