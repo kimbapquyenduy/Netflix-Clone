@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 
 export const Movies = ({ item, key, index, tOS }) => {
   const [like, setLike] = useState(false);
-  const [save, setSave] = useState();
+  const [save, setSave] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [genre, setGenre] = useState([]);
   const [runtime, setRuntime] = useState();
@@ -88,12 +88,11 @@ export const Movies = ({ item, key, index, tOS }) => {
       setFavMovies(doc.data()?.saveMovies);
     });
   }, [user?.email]);
-
+  let test = true;
   const movieID = doc(db, "users", `${user?.email}`);
   const saveMovies = async () => {
     if (user?.email) {
-      setSave(true);
-      console.log("ds");
+      CheckFav();
       await updateDoc(movieID, {
         saveMovies: arrayUnion({
           id: item?.id,
@@ -120,7 +119,7 @@ export const Movies = ({ item, key, index, tOS }) => {
       await updateDoc(moviesRef, {
         saveMovies: result,
       });
-      setSave(false);
+      CheckFav();
     } catch (error) {
       console.log(error);
     }
