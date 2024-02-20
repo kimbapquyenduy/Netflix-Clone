@@ -52,9 +52,6 @@ export const Home = () => {
           tOS={"movie"}
         />
       </div>
-      <footer className="w-full flex items-end justify-center h-[350px]">
-        <Footer />
-      </footer>
     </>
   );
 };

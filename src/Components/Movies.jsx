@@ -9,7 +9,7 @@ import YouTube from "react-youtube";
 import { useState } from "react";
 import { UserAuth } from "../Context/AuthContext";
 import { db } from "../Firebase";
-import { arrayUnion, updateDoc, doc } from "firebase/firestore";
+import { arrayUnion, updateDoc, doc, onSnapshot } from "firebase/firestore";
 import { Popup } from "./Popup";
 import { useEffect } from "react";
 import requests from "../Requests";
@@ -19,33 +19,44 @@ import { Link } from "react-router-dom";
 
 export const Movies = ({ item, key, index, tOS }) => {
   const [like, setLike] = useState(false);
-  const [save, setSave] = useState(false);
+  const [save, setSave] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [genre, setGenre] = useState([]);
   const [runtime, setRuntime] = useState();
   const [epNum, setEpNum] = useState();
-  const { user } = UserAuth();
+  const [favMovies, setFavMovies] = useState([]);
   const Hoverpop = useRef();
+  const { user } = UserAuth();
+
+  function calculateRow(index, elementsPerRow = 6) {
+    return index < 0 ? -1 : Math.floor(index / elementsPerRow);
+  }
 
   const handleMouseMove = (event) => {
     const x = Hoverpop.current.getBoundingClientRect().x;
-    if (index === 0) {
+    if (calculateRow(index) > 0) {
+      Hoverpop.current.style.top = calculateRow(index) * 100 + "px";
+    }
+    if (index % 6 === 0) {
       Hoverpop.current.style.left = x + "px";
-    } else if (index === 5) {
+    } else if (index % 6 === 5) {
       Hoverpop.current.style.left = 77 + "%";
     } else {
       Hoverpop.current.style.left = x - 50 + "px";
     }
   };
+
   const handleMouseleave = (event) => {
     const x = Hoverpop.current.getBoundingClientRect().x;
     Hoverpop.current.style.left = x + "px";
   };
+
   useEffect(() => {
     axios.get(requests.requestGenre).then((response) => {
       setGenre(response.data.genres);
     });
   }, [requests.requestGenre]);
+
   if (tOS == "tv") {
     useEffect(() => {
       axios
@@ -72,20 +83,46 @@ export const Movies = ({ item, key, index, tOS }) => {
     ]);
   }
 
+  useEffect(() => {
+    onSnapshot(doc(db, "users", `${user?.email}`), (doc) => {
+      setFavMovies(doc.data()?.saveMovies);
+    });
+  }, [user?.email]);
+
   const movieID = doc(db, "users", `${user?.email}`);
   const saveMovies = async () => {
     if (user?.email) {
-      setLike(!like);
       setSave(true);
+      console.log("ds");
       await updateDoc(movieID, {
         saveMovies: arrayUnion({
-          id: item.id,
-          title: item.title,
-          img: item.backdrop_path,
+          id: item?.id,
+          title: item?.title ? item?.title : item.name,
+          backdrop_path: item.backdrop_path,
+          genre_ids: item.genre_ids,
+          overview: item.overview,
+          release_date: item.release_date
+            ? item.release_date
+            : item.first_air_date,
+          vote_average: item.vote_average,
+          tOS: tOS,
         }),
       });
     } else {
       alert("Log In To Save Movies!");
+    }
+  };
+
+  const moviesRef = doc(db, "users", `${user?.email}`);
+  const deleteMovie = async (id) => {
+    try {
+      const result = favMovies.filter((item) => item.id !== id);
+      await updateDoc(moviesRef, {
+        saveMovies: result,
+      });
+      setSave(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -115,12 +152,19 @@ export const Movies = ({ item, key, index, tOS }) => {
     )
     .filter((e) => e.length);
 
-  console.log(mainGenres);
+  const CheckFav = () => {
+    if (favMovies.filter((obj) => obj.id === item.id).length) {
+      setSave(true);
+    } else setSave(false);
+  };
+
   return (
     <>
       <div
-        className={`group/item h-full w-[200px] sm:w-full inline-block  p-1  `}
-        onMouseEnter={() => handleMouseMove()}
+        className={`group/item h-full  sm:w-[16.66%] inline-block  p-1  `}
+        onMouseEnter={() => {
+          handleMouseMove(), CheckFav();
+        }}
         onMouseOut={() => handleMouseleave()}
       >
         <div
@@ -152,8 +196,12 @@ export const Movies = ({ item, key, index, tOS }) => {
               <Link to={`/watch/${tOS}/${item?.id}`}>
                 <FaCirclePlay className="text-[2.5vw] cursor-pointer  hover:text-white/70 transition duration-200 " />
               </Link>
-              {like ? (
-                <IoIosCheckmark className=" text-[2.5vw] text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200" />
+
+              {save ? (
+                <IoIosCheckmark
+                  onClick={() => deleteMovie(item?.id)}
+                  className=" text-[2.5vw] text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"
+                />
               ) : (
                 <FaCirclePlus
                   onClick={saveMovies}

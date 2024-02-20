@@ -37,6 +37,7 @@ const Row = ({ title, fecthURL, tOS }) => {
     }
     return a;
   }
+
   return (
     <>
       <h2 className="text-white font-bold md:text-xl p-4">{title}</h2>

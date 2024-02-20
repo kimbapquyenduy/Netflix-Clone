@@ -10,6 +10,7 @@ import { SignUp } from "./Pages/SignUp";
 import { Account } from "./Pages/Account";
 import { ProtectRoute } from "./Components/ProtectRoute";
 import { Watch } from "./Pages/Watch";
+import Footer from "./Components/Footer";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -32,6 +33,9 @@ function App() {
             }
           />
         </Routes>
+        <footer className="w-full flex items-end justify-center h-[350px]">
+          <Footer />
+        </footer>
       </AuthContextProvider>
     </>
   );
