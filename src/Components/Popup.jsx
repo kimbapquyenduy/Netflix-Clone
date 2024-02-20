@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { AiFillYoutube, AiOutlineClose } from "react-icons/ai";
-import { GiSpeaker } from "react-icons/gi";
-
+import { GiSpeaker, GiSpeakerOff } from "react-icons/gi";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
 import axios from "axios";
@@ -24,18 +23,15 @@ export const Popup = ({
 }) => {
   const [urlTrailer, setUrlTrailer] = useState([]);
 
-  const opts = {
-    height: "100%",
-    width: "100%",
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      loop: 1,
-
-      allowfullscreen: 1,
-    },
-  };
-
+  const mainGenre = item?.genre_ids
+    .map((genlist, index) =>
+      genre
+        .filter((obj, index) => {
+          return obj.id == genlist;
+        })
+        .map((obj, index) => obj.name)
+    )
+    .filter((e) => e.length);
   if (tOS == "tv") {
     useEffect(() => {
       if (item) {
@@ -90,23 +86,60 @@ export const Popup = ({
     } else return str;
   };
 
+  const audio = useRef();
+  const opts = {
+    height: "100%",
+    width: "100%",
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      playlist: urlTrailer,
+      loop: 1,
+      allowfullscreen: 1,
+    },
+  };
+  const [audioSys, setAudioSys] = useState(true);
+
+  const audioToggle = () => {
+    audio.current.internalPlayer
+      .isMuted()
+      .then((value) => {
+        if (value) {
+          setAudioSys(true);
+          audio.current.internalPlayer.unMute();
+        } else {
+          setAudioSys(false);
+          audio.current.internalPlayer.mute();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  isOpen
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "auto");
+
   return (
     <>
       {isOpen ? (
-        <div className="fixed w-[100%] h-[100vh] bg-black/90 justify-center items-center top-0 left-0 flex z-[999999] font-sans ">
-          <div className=" w-[900px] h-[98vh] bg-[#181818] rounded-lg">
+        <div className="fixed w-[100%] h-[100vh] bg-black/90 justify-center items-center  top-0 left-0 flex z-[999999] font-sans ">
+          <div className=" w-[900px] h-[98vh] bg-[#181818] rounded-lg  overflow-y-scroll overflow-x-hidden scrollbar-hide">
             <div className="w-full h-[70%] bg-white relative rounded-lg ">
               <div className="absolute bottom-0 w-full h-[10%] bg-gradient-to-t from-[#181818] z-10"></div>
               <div className="absolute top-0 w-full h-[35%] bg-gradient-to-b from-[#000000] z-10"></div>
               <div className="absolute bottom-0 w-full h-full z-10"></div>
               <div
                 className="absolute top-4 right-2 text-xl rounded-full bg-black/80 text-white p-1 cursor-pointer z-[99999]"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false), setAudioSys(true);
+                }}
               >
                 <AiOutlineClose />
               </div>
 
               <YouTube
+                ref={audio}
                 videoId={urlTrailer}
                 opts={opts}
                 className="absolute top-0 bottom-0 left-0 h-full w-full z-0"
@@ -136,26 +169,34 @@ export const Popup = ({
                     className="bg-white rounded-full  text-[#1b1b1b] p-0 ml-3 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
                   />
                 )}
-                <GiSpeaker
-                  size={40}
-                  className="text-sm cursor-pointer absolute  right-20 bg-white/10 text-[#a4a4a4] p-0 ml-3 z-50  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#fff] transition duration-200 rounded-full"
-                />
+                {audioSys ? (
+                  <GiSpeaker
+                    onClick={audioToggle}
+                    size={40}
+                    className="text-sm cursor-pointer absolute  right-20 bg-white/10 text-[#a4a4a4] p-0 ml-3 z-50  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#fff] transition duration-200 rounded-full"
+                  />
+                ) : (
+                  <GiSpeakerOff
+                    onClick={audioToggle}
+                    size={40}
+                    className="text-sm cursor-pointer absolute  right-20 bg-white/10 text-[#a4a4a4] p-0 ml-3 z-50  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#fff] transition duration-200 rounded-full"
+                  />
+                )}
               </div>
             </div>
-            <div className="flex align-middle justify-center">
+            <div className="flex content-center justify-center mb-2 ">
               <div className="px-10 pb-2 flex-[65%] ">
                 <div className="flex">
-                  <p className=" text-[#a4a4a4] break-words whitespace-pre-wrap mt-3 text-lg font-bold ">
+                  <p className=" text-[#a4a4a4] break-words whitespace-pre-wrap mt-3 text-xl font-bold  ">
                     {tOS == "tv" ? epNum + " Episode" : trasnWatchTime(runtime)}
                   </p>
-                  <p>{item?.created_by}</p>
                 </div>
 
-                <p className="w-full text-white break-words whitespace-pre-wrap mt-3 text-base font-medium font-sans ">
-                  {truncateString(item?.overview, 300)}
+                <p className="w-full text-white break-words whitespace-pre-wrap mt-3 text-lg font-medium font-sans ">
+                  {item?.overview}
                 </p>
               </div>
-              <div className="mt-6 flex-[35%] font-sans text-base">
+              <div className="mt-6 flex-[35%] font-sans text-lg ">
                 <p className="text-white  font-medium">
                   <span className="text-white/50 font-extralight">
                     {" "}
@@ -167,15 +208,7 @@ export const Popup = ({
                 </p>
                 <p className="text-white mt-2 font-medium">
                   <span className="text-white/50 font-extralight"> Genre:</span>{" "}
-                  {item?.genre_ids.map((genlist) =>
-                    genre
-                      .filter((obj) => {
-                        return obj.id == genlist;
-                      })
-                      .map((obj, key) =>
-                        obj.name == "" ? obj.name : obj.name + ", "
-                      )
-                  )}
+                  {mainGenre.join(", ")}
                 </p>
                 <p className="text-white mt-2  font-medium">
                   <span className="text-white/50 font-extralight">

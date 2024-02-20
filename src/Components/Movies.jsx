@@ -102,6 +102,20 @@ export const Movies = ({ item, key, index, tOS }) => {
       controls: 0,
     },
   };
+  const mainGenres = item?.genre_ids
+    .slice(0, 3)
+    .map((genlist) =>
+      genre
+
+        .filter((obj) => {
+          return obj.id == genlist;
+        })
+
+        .map((obj, key) => obj.name)
+    )
+    .filter((e) => e.length);
+
+  console.log(mainGenres);
   return (
     <>
       <div
@@ -149,7 +163,7 @@ export const Movies = ({ item, key, index, tOS }) => {
 
               <FaCircleChevronDown
                 onClick={() => setIsOpen(true)}
-                className="text-[2.5vw] text-sm cursor-pointer absolute right-7 bg-white rounded-full text-[#1b1b1b]  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
+                className="text-[2.5vw]  cursor-pointer absolute right-7 bg-white rounded-full text-[#1b1b1b]  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
               />
             </div>
             <div className="mx-3 flex justify-evenly  flex-col h-[65%] ">
@@ -159,16 +173,8 @@ export const Movies = ({ item, key, index, tOS }) => {
               <p className=" text-[#b4b4b4] lg:text-xs xl:text-sm 2xl:text-base ">
                 {tOS == "tv" ? epNum + " Episode" : trasnWatchTime(runtime)}
               </p>
-              <p className="text-base break-words whitespace-pre-wrap font-bold lg:text-xs xl:text-sm 2xl:text-base ">
-                {item?.genre_ids.slice(0, 3).map((genlist) =>
-                  genre
-
-                    .filter((obj) => {
-                      return obj.id == genlist;
-                    })
-
-                    .map((obj, key) => obj.name + " ")
-                )}
+              <p className="text-base break-words whitespace-pre-wrap font-bold lg:text-xs xl:text-sm 2xl:text-base flex">
+                {mainGenres.join(" • ")}
               </p>
             </div>
           </div>
