@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import { Tooltip } from "@material-tailwind/react";
 
 export const Movies = ({ item, key, index, tOS }) => {
-  const [save, setSave] = useState(true);
+  const [save, setSave] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [genre, setGenre] = useState([]);
   const [runtime, setRuntime] = useState();
