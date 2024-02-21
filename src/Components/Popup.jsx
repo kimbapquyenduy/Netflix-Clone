@@ -4,11 +4,11 @@ import { useState } from "react";
 import { AiFillYoutube, AiOutlineClose } from "react-icons/ai";
 import { GiSpeaker, GiSpeakerOff } from "react-icons/gi";
 import YouTube from "react-youtube";
-import movieTrailer from "movie-trailer";
 import axios from "axios";
 import { FaPlay, FaCirclePlus, FaCircleChevronDown } from "react-icons/fa6";
 import { IoIosCheckmark } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { Tooltip } from "@material-tailwind/react";
 export const Popup = ({
   setIsOpen,
   isOpen,
@@ -19,7 +19,8 @@ export const Popup = ({
   runtime,
   trasnWatchTime,
   saveMovies,
-  like,
+  deleteMovie,
+  save,
 }) => {
   const [urlTrailer, setUrlTrailer] = useState([]);
 
@@ -116,9 +117,6 @@ export const Popup = ({
         console.log(err);
       });
   };
-  isOpen
-    ? (document.body.style.overflow = "hidden")
-    : (document.body.style.overflow = "auto");
 
   return (
     <>
@@ -147,8 +145,8 @@ export const Popup = ({
               <p className="text-5xl text-white font-bold break-words whitespace-pre-wrap absolute left-10 bottom-40 font-serif max-w-2xl ">
                 {item?.title ? item?.title : item.name}
               </p>
-              <div className="flex w-full m-3 absolute left-8 bottom-20">
-                <Link to={`/watch/${tOS}/${item?.id}`} className="z-[100]">
+              <div className="flex w-full m-3 absolute left-8 bottom-20 z-[100]">
+                <Link to={`/watch/${tOS}/${item?.id}`} className="">
                   <div className="flex items-center align-middle justify-center bg-white rounded w-[140px] h-[40px] hover:bg-white/70 z-50 transition duration-200 cursor-pointer">
                     <FaPlay size={25} className="text-sm  " />
                     <p className=" font-semibold text-lg cursor-pointer text-black ml-2">
@@ -157,16 +155,17 @@ export const Popup = ({
                   </div>
                 </Link>
 
-                {like ? (
-                  <IoIosCheckmark
-                    className="text-white rounded-full bg-[#1b1b1b] p-0 ml-3 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"
-                    size={40}
-                  />
+                {save ? (
+                  <div className="">
+                    <IoIosCheckmark
+                      onClick={() => deleteMovie(item?.id)}
+                      className=" text-[2.5vw] text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"
+                    />
+                  </div>
                 ) : (
                   <FaCirclePlus
                     onClick={saveMovies}
-                    size={40}
-                    className="bg-white rounded-full  text-[#1b1b1b] p-0 ml-3 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
+                    className=" text-[2.5vw] bg-white rounded-full text-[#1b1b1b] ml-2 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
                   />
                 )}
                 {audioSys ? (
@@ -186,7 +185,7 @@ export const Popup = ({
             </div>
             <div className="flex content-center justify-center mb-2 ">
               <div className="px-10 pb-2 flex-[65%] ">
-                <div className="flex">
+                <div className="flex z-[99999] ">
                   <p className=" text-[#a4a4a4] break-words whitespace-pre-wrap mt-3 text-xl font-bold  ">
                     {tOS == "tv" ? epNum + " Episode" : trasnWatchTime(runtime)}
                   </p>

@@ -16,9 +16,9 @@ import requests from "../Requests";
 import axios from "axios";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { Tooltip } from "@material-tailwind/react";
 
 export const Movies = ({ item, key, index, tOS }) => {
-  const [like, setLike] = useState(false);
   const [save, setSave] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [genre, setGenre] = useState([]);
@@ -28,6 +28,16 @@ export const Movies = ({ item, key, index, tOS }) => {
   const Hoverpop = useRef();
   const { user } = UserAuth();
 
+  useEffect(() => {
+    document.body.style.overflow = "unset";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    }
+  }, [isOpen]);
+
+  // isOpen
+  //   ? (document.body.style.overflow = "hidden")
+  //   : (document.body.style.overflow = "auto");
   function calculateRow(index, elementsPerRow = 6) {
     return index < 0 ? -1 : Math.floor(index / elementsPerRow);
   }
@@ -42,7 +52,7 @@ export const Movies = ({ item, key, index, tOS }) => {
     } else if (index % 6 === 5) {
       Hoverpop.current.style.left = 77 + "%";
     } else {
-      Hoverpop.current.style.left = x - 50 + "px";
+      Hoverpop.current.style.left = x + "px";
     }
   };
 
@@ -106,10 +116,10 @@ export const Movies = ({ item, key, index, tOS }) => {
           tOS: tOS,
         }),
       });
+      setSave(true);
     } else {
       alert("Log In To Save Movies!");
     }
-    setSave(true);
   };
 
   const moviesRef = doc(db, "users", `${user?.email}`);
@@ -119,10 +129,10 @@ export const Movies = ({ item, key, index, tOS }) => {
       await updateDoc(moviesRef, {
         saveMovies: result,
       });
+      setSave(false);
     } catch (error) {
       console.log(error);
     }
-    setSave(false);
   };
 
   const trasnWatchTime = (totatlminute) => {
@@ -192,26 +202,66 @@ export const Movies = ({ item, key, index, tOS }) => {
           ></iframe> */}
           <div className="hidden group-hover/item:block text-white px-2  h-[50%]">
             <div className="flex mx-3 mt-3  z-[99999] ">
-              <Link to={`/watch/${tOS}/${item?.id}`}>
-                <FaCirclePlay className="text-[2.5vw] cursor-pointer  hover:text-white/70 transition duration-200 " />
-              </Link>
-
+              <Tooltip
+                content={"Play Video"}
+                animate={{
+                  mount: { scale: 1, y: 0 },
+                  unmount: { scale: 0, y: 25 },
+                }}
+                className="border border-blue-gray-50 bg-[#e4e4e4] px-4 py-2 shadow-xl shadow-black/10 text-black font-semibold"
+              >
+                <Link to={`/watch/${tOS}/${item?.id}`}>
+                  <FaCirclePlay className="text-[2.5vw] cursor-pointer  hover:text-white/70 transition duration-200 " />
+                </Link>
+              </Tooltip>
               {save ? (
-                <IoIosCheckmark
-                  onClick={() => deleteMovie(item?.id)}
-                  className=" text-[2.5vw] text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"
-                />
+                <Tooltip
+                  content={"Remove From Favorites"}
+                  animate={{
+                    mount: { scale: 1, y: 0 },
+                    unmount: { scale: 0, y: 25 },
+                  }}
+                  className="border border-blue-gray-50 bg-[#e4e4e4] px-4 py-2 shadow-xl shadow-black/10 text-black font-semibold"
+                >
+                  <div>
+                    <IoIosCheckmark
+                      onClick={() => deleteMovie(item?.id)}
+                      className=" text-[2.5vw] text-white rounded-full bg-[#1b1b1b] p-0 ml-2 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff]  transition duration-200"
+                    />
+                  </div>
+                </Tooltip>
               ) : (
-                <FaCirclePlus
-                  onClick={saveMovies}
-                  className=" text-[2.5vw] bg-white rounded-full text-[#1b1b1b] ml-2 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
-                />
+                <Tooltip
+                  content={"Add To Favorites"}
+                  animate={{
+                    mount: { scale: 1, y: 0 },
+                    unmount: { scale: 0, y: 25 },
+                  }}
+                  className="border border-blue-gray-50 bg-[#e4e4e4] px-4 py-2 shadow-xl shadow-black/10 text-black font-semibold"
+                >
+                  <div>
+                    <FaCirclePlus
+                      onClick={saveMovies}
+                      className=" text-[2.5vw] bg-white rounded-full text-[#1b1b1b] ml-2 z-50 cursor-pointer border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
+                    />
+                  </div>
+                </Tooltip>
               )}
-
-              <FaCircleChevronDown
-                onClick={() => setIsOpen(true)}
-                className="text-[2.5vw]  cursor-pointer absolute right-7 bg-white rounded-full text-[#1b1b1b]  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
-              />
+              <Tooltip
+                content={"More Detail"}
+                animate={{
+                  mount: { scale: 1, y: 0 },
+                  unmount: { scale: 0, y: 25 },
+                }}
+                className="border border-blue-gray-50 bg-[#e4e4e4] px-4 py-2 shadow-xl shadow-black/10 text-black font-semibold"
+              >
+                <div className="absolute right-7">
+                  <FaCircleChevronDown
+                    onClick={() => setIsOpen(true)}
+                    className="text-[2.5vw]  cursor-pointer  bg-white rounded-full text-[#1b1b1b]  border-2 border-[#a4a4a4] hover:border-[#fff] hover:text-[#141414] transition duration-200"
+                  />
+                </div>
+              </Tooltip>
             </div>
             <div className="mx-3 flex justify-evenly  flex-col h-[65%] ">
               <p className=" whitespace-normal text-lg font-bold lg:text-sm xl:text-base 2xl:text-lg ">
@@ -250,7 +300,8 @@ export const Movies = ({ item, key, index, tOS }) => {
         runtime={runtime}
         trasnWatchTime={trasnWatchTime}
         saveMovies={saveMovies}
-        like={like}
+        deleteMovie={deleteMovie}
+        save={save}
       />
     </>
   );
